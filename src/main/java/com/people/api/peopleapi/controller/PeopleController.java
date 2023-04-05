@@ -1,6 +1,7 @@
 package com.people.api.peopleapi.controller;
 
 import com.people.api.peopleapi.model.People;
+import com.people.api.peopleapi.repository.AddressRepository;
 import com.people.api.peopleapi.repository.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ public class PeopleController {
 
     @Autowired
     private PeopleRepository peopleRepository;
+    @Autowired
+    private AddressRepository addressRepository;
 
     @GetMapping
     public List<People> index() {
