@@ -27,7 +27,16 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Person insert(@RequestBody Person people) {
-        return peopleRepository.save(people);
+    public Person insert(@RequestBody Person person) {
+        return peopleRepository.save(person);
+    }
+
+    @PutMapping("/{id}")
+    public Person update(@PathVariable Long id, @RequestBody Person person) throws PersonNotFoundException {
+        Person personToUpdate = peopleRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+        personToUpdate.setName(person.getName());
+        personToUpdate.setBirthDate(person.getBirthDate());
+        personToUpdate.setAddress(person.getAddress());
+        return peopleRepository.save(personToUpdate);
     }
 }
