@@ -47,4 +47,14 @@ public class AddressController {
         Person person = peopleRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
         return person.getAddress();
     }
+
+    @PostMapping("/person/{personId}")
+    public List<Address> insertAddressForPerson(@PathVariable Long personId, @RequestBody Address address) throws PersonNotFoundException {
+        Person person = peopleRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
+        List<Address> addressToUpdate = person.getAddress();
+        addressToUpdate.add(address);
+        person.setAddress(addressToUpdate);
+        peopleRepository.save(person);
+        return addressToUpdate;
+    }
 }
