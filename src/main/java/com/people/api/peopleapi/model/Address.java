@@ -16,5 +16,5 @@ public class Address {
     private Integer zipCode;
     private Integer number;
     private String city;
-    private boolean mainAddress;
+    private Boolean mainAddress;
 }
