@@ -7,7 +7,6 @@ import com.people.api.peopleapi.model.Person;
 import com.people.api.peopleapi.repository.AddressRepository;
 import com.people.api.peopleapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -18,18 +17,7 @@ public class AddressController {
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
-    private PersonRepository peopleRepository;
-
-    @GetMapping
-    public List<Address> index() {
-        return addressRepository.findAll();
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Address insert(@RequestBody Address address) {
-        return addressRepository.save(address);
-    }
+    private PersonRepository personRepository;
 
     @PutMapping("/{id}")
     public Address update(@PathVariable Long id, @RequestBody Address address) throws AddressNotFoundException {
@@ -44,17 +32,17 @@ public class AddressController {
 
     @GetMapping("/person/{personId}")
     public List<Address> showAddressForPerson(@PathVariable Long personId) throws PersonNotFoundException {
-        Person person = peopleRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
+        Person person = personRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
         return person.getAddress();
     }
 
     @PostMapping("/person/{personId}")
     public List<Address> insertAddressForPerson(@PathVariable Long personId, @RequestBody Address address) throws PersonNotFoundException {
-        Person person = peopleRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
+        Person person = personRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(personId));
         List<Address> addressToUpdate = person.getAddress();
         addressToUpdate.add(address);
         person.setAddress(addressToUpdate);
-        peopleRepository.save(person);
+        personRepository.save(person);
         return addressToUpdate;
     }
 }
